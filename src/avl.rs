@@ -1,3 +1,6 @@
+/// AVL树（Adelson-Velsky and Landis Tree）是一种自平衡二叉搜索树（Binary Search Tree, BST），
+/// 以其发明者G.M. Adelson-Velsky 和 E.M. Landis 命名。它是计算机科学中一种用于保持数据高效排序的基础数据结构。
+/// AVL树的特点是任何节点的两个子树的高度差（平衡因子）最多为1，因此始终保持平衡，从而保证了操作的效率
 use std::cmp::max;
 
 pub struct Node<T: Ord + Clone> {
@@ -12,12 +15,7 @@ type Link<T> = Option<Box<Node<T>>>;
 
 impl<T: Ord + Clone> Node<T> {
   fn new(value: T) -> Self {
-    Node {
-      value,
-      height: 1,
-      left: None,
-      right: None,
-    }
+    Node { value, height: 1, left: None, right: None }
   }
 
   fn height(node: &Link<T>) -> usize {
@@ -68,7 +66,7 @@ impl<T: Ord + Clone> Node<T> {
 }
 
 pub struct AVLTree<T: Ord + Clone> {
-  root: Link<T>
+  root: Link<T>,
 }
 
 impl<T: Ord + Clone> AVLTree<T> {
@@ -127,12 +125,11 @@ impl<T: Ord + Clone> AVLTree<T> {
         let mut successor = n.right.take().unwrap();
         let mut parent = &mut successor;
         while let Some(ref mut left) = parent.left {
-            parent = left;
+          parent = left;
         }
         // 替换当前节点的值为后继节点的值
         n.value = parent.value.clone();
         n.right = Self::remove_internal(Some(successor), n.value.clone());
-        
       }
       Some(n.balance())
     } else {
@@ -148,29 +145,29 @@ impl<T: Ord + Clone> AVLTree<T> {
 
   fn in_order_helper(node: &Link<T>, result: &mut Vec<T>) {
     if let Some(n) = node {
-        Self::in_order_helper(&n.left, result);
-        result.push(n.value.clone());
-        Self::in_order_helper(&n.right, result);
+      Self::in_order_helper(&n.left, result);
+      result.push(n.value.clone());
+      Self::in_order_helper(&n.right, result);
     }
   }
 }
 
-
 #[cfg(test)]
 mod test {
-    use super::*;
+  use super::*;
 
-    #[test]
-    fn test_avl_tree() {
-        let mut tree = AVLTree::new();
-        tree.insert(2);
-        tree.insert(1);
-        tree.insert(3);
-        assert!(tree.contains(3));
-        assert!(!tree.contains(4));
-        assert!(tree.in_order_traversal() == vec![1, 2, 3]);
-        tree.remove(3);
-        assert!(!tree.contains(3));
-        assert!(tree.in_order_traversal() == vec![1, 2]);
-    }
+  #[test]
+  fn test_avl_tree() {
+    let mut tree = AVLTree::new();
+    tree.insert(2);
+    tree.insert(1);
+    tree.insert(3);
+    assert!(tree.contains(3));
+    assert!(!tree.contains(4));
+    assert!(tree.in_order_traversal() == vec![1, 2, 3]);
+    tree.remove(3);
+    assert!(!tree.contains(3));
+    assert!(tree.in_order_traversal() == vec![1, 2]);
+    assert!(tree.contains(2))
+  }
 }
