@@ -1,10 +1,9 @@
 
-mod avl;
-mod bst;
+mod tree;
 
 
 fn main() {
-  let mut avl = avl::AVLTree::new();
+  let mut avl = tree::AVLTree::new();
   avl.insert(5);
   avl.insert(3);
   avl.insert(7);
@@ -14,7 +13,7 @@ fn main() {
   avl.remove(3);
   println!("{:?}", avl.in_order_traversal());
 
-  let mut bst = bst::BST::new();
+  let mut bst = tree::BST::new();
   bst.insert(5);
   bst.insert(3);
   bst.insert(7);

@@ -1,2 +1,2 @@
-mod avl;
-mod bst;
+
+mod tree;
